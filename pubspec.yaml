@@ -1,7 +1,7 @@
 name: otp_consent
 description: Flutter plugin to provide SMS User Consent API gives the content of a single SMS message to us if the user gives permission.
 version: 0.0.1
-author: huynn109
+author: huynn109.me
 homepage: https://github.com/huynn109/otp_consent
 documentation: https://github.com/huynn109/otp_consent/docs
 

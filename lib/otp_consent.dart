@@ -63,9 +63,10 @@ mixin OtpConsentAutoFill {
 
   Future<void> stopSmsListen() async {
     await _otpConsent.stopListening;
+    _cancel();
   }
 
-  void cancel() {
+  void _cancel() {
     _subscription?.cancel();
   }
 

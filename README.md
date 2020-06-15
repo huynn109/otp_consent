@@ -1,14 +1,22 @@
 # otp_consent
 
-A new flutter plugin project.
+Flutter plugin to provide SMS User Consent API gives the content of a single SMS message to us if the user gives permission.
 
 ## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+SMS need to follow some rules as describe here
+- Contains one-time code
+- 4-10 digit alphanumeric with one number
+- Not from contact
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### Usage
+
+```dart
+import 'import package:otp_consent/otp_consent.dart';
+```
+Extend OtpConsentAutoFill mixin that will offer you:
+- startSmsListening(): to listen SMS code from the native
+- stopSmsListen(): to stop listen broadcast receiver from native
+- smsReceived(sms): call get value otp when the sms is received. 
+- sms: get sms code received
+

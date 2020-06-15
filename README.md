@@ -1,6 +1,7 @@
 # otp_consent
 
 Flutter plugin to provide SMS User Consent API gives the content of a single SMS message to us if the user gives permission.
+For Android, that's where this package is useful. No need for iOS
 
 ## Getting Started
 

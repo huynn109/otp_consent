@@ -128,8 +128,11 @@ class OtpConsentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plugin
     }
 
     private fun unRegisterBroadcastListener() {
-        mActivity.unregisterReceiver(smsBroadcastReceiver)
-        isListening = false
+        try {
+            mActivity.unregisterReceiver(smsBroadcastReceiver)
+            isListening = false
+        } catch (ex: Exception) {
+        }
     }
 
     private fun parseOneTimeCode(message: String?): String? {

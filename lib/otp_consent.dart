@@ -1,17 +1,23 @@
+///
+/// It is compatible Android only.
+///
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+///
+///
 class OtpConsent {
+  /// Create instance [OtpConsent] plugin
   static OtpConsent _singleton;
-  static const MethodChannel _channel = const MethodChannel('otp_consent');
-  final StreamController<String> _smsController = StreamController.broadcast();
-
   factory OtpConsent() => _singleton ??= OtpConsent._();
-
   OtpConsent._() {
     _channel.setMethodCallHandler(_handleMethod); // Set callback from native
   }
+
+  /// [MethodChannel] used to communicate with the platform side.
+  static const MethodChannel _channel = const MethodChannel('otp_consent');
+  final StreamController<String> _smsController = StreamController.broadcast();
 
   Stream<String> get sms => _smsController.stream;
 

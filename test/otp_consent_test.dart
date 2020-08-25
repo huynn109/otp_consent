@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await OtpConsent().platformVersion, '42');
+    expect(await OtpConsent().startListening(), true);
   });
 }

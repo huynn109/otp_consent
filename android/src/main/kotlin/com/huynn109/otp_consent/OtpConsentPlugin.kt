@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.annotation.NonNull
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.huynn109.otp_consent.SMSBroadcastReceiver.Companion.SMS_CONSENT_REQUEST
@@ -58,8 +57,8 @@ class OtpConsentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plugin
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
-            "startListening" -> startListening(result)
-            "stopListening" -> stopListening()
+            "startListening" -> startListening(call, result)
+            "stopListening" -> stopListening(result)
             else -> result.notImplemented()
         }
     }
@@ -87,7 +86,10 @@ class OtpConsentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plugin
                     resultCode == Activity.RESULT_OK && data != null -> {
                         val message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
                         val messageParsed = parseOneTimeCode(message)
-                        methodChannel.invokeMethod("onSmsConsentReceived", messageParsed)
+                        val arguments: HashMap<String, String?> = HashMap()
+                        arguments["sms"] = message
+                        arguments["smsParsed"] = messageParsed
+                        methodChannel.invokeMethod("onSmsConsentReceived", arguments)
                     }
                     else -> {
                         // Consent denied. User can type OTC manually.
@@ -109,22 +111,23 @@ class OtpConsentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plugin
         unRegisterBroadcastListener()
     }
 
-    private fun startListening(result: Result) {
+    private fun startListening(call: MethodCall, result: Result) {
         synchronized(this) {
-            startBroadcastReceiver(result)
+            val senderPhoneNumber = if (call.hasArgument("senderPhoneNumber")) call.argument<String>("senderPhoneNumber") else null
+            startBroadcastReceiver(result, senderPhoneNumber)
         }
     }
 
-    private fun startBroadcastReceiver(result: Result) {
-        SmsRetriever.getClient(mActivity).startSmsUserConsent(null)
+    private fun startBroadcastReceiver(result: Result, senderPhoneNumber: String?) {
+        SmsRetriever.getClient(mActivity).startSmsUserConsent(senderPhoneNumber)
         smsBroadcastReceiver.injectListener(mActivity, this)
         mActivity.registerReceiver(smsBroadcastReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
         result.success(true)
     }
 
-    private fun stopListening() {
-        methodChannel.invokeMethod("onStopListener", null)
+    private fun stopListening(result: Result) {
         unRegisterBroadcastListener()
+        result.success(null)
     }
 
     private fun unRegisterBroadcastListener() {

@@ -16,8 +16,8 @@ SMS need to follow some rules as describe here
 import 'import package:otp_consent/otp_consent.dart';
 ```
 Extend OtpConsentAutoFill mixin that will offer you:
-- startSmsListening(): to listen SMS code from the native
-- stopSmsListen(): to stop listen broadcast receiver from native
+- startOtpConsent(): to listen SMS code from the native
+- stopOtpConsent(): to stop listen broadcast receiver from native
 - smsReceived(sms): call get value otp when the sms is received. 
 - sms: get sms code received
 

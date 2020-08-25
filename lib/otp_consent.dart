@@ -2,6 +2,9 @@
 /// It is compatible Android only.
 ///
 import 'dart:async';
+import 'dart:collection';
+import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/services.dart';
 
@@ -10,44 +13,38 @@ import 'package:flutter/services.dart';
 class OtpConsent {
   /// Create instance [OtpConsent] plugin
   static OtpConsent _singleton;
+
   factory OtpConsent() => _singleton ??= OtpConsent._();
+
   OtpConsent._() {
     _channel.setMethodCallHandler(_handleMethod); // Set callback from native
   }
 
   /// [MethodChannel] used to communicate with the platform side.
   static const MethodChannel _channel = const MethodChannel('otp_consent');
-  final StreamController<String> _smsController = StreamController.broadcast();
+  final StreamController<Map<String, String>> _smsController =
+      StreamController.broadcast();
 
-  Stream<String> get sms => _smsController.stream;
+  Stream<Map<String, String>> get sms => _smsController.stream;
 
-  Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-
-  Future<bool> get startListening async {
-    final bool startListening = await _channel.invokeMethod('startListening');
+  Future<bool> startListening({String senderPhoneNumber}) async {
+    final bool startListening =
+        await _channel.invokeMethod('startListening', senderPhoneNumber);
     return startListening;
   }
 
-  Future<bool> get stopListening async {
-    final bool stopListening = await _channel.invokeMethod('stopListening');
-    return stopListening;
+  Future<void> get stopListening async {
+    return await _channel.invokeMethod('stopListening');
   }
 
   Future<dynamic> _handleMethod(MethodCall methodCall) async {
     switch (methodCall.method) {
       case "onSmsConsentReceived":
-        _smsController.add(methodCall.arguments);
-        break;
-      case "onTimeout":
-        break;
-      case "onSmsConsentPermissionDenied":
-        break;
-      case "onShowPermissionDialog":
-        break;
-      case "onStopListener":
+        Map<String, String> hm = {
+          'sms': methodCall.arguments['sms'],
+          'smsParsed': methodCall.arguments['smsParsed']
+        };
+        _smsController.add(hm);
         break;
     }
   }
@@ -58,16 +55,16 @@ mixin OtpConsentAutoFill {
   String sms;
   StreamSubscription _subscription;
 
-  Future<void> startSmsListening() async {
+  Future<void> startOtpConsent({String senderPhoneNumber}) async {
     _subscription?.cancel();
     _subscription = _otpConsent.sms.listen((sms) {
-      this.sms = sms;
-      smsReceived(sms);
+      this.sms = sms['sms'];
+      smsReceived(sms['smsParsed']);
     });
-    await _otpConsent.startListening;
+    _otpConsent.startListening(senderPhoneNumber: senderPhoneNumber);
   }
 
-  Future<void> stopSmsListen() async {
+  Future<void> stopOtpConsent() async {
     await _otpConsent.stopListening;
     _cancel();
   }

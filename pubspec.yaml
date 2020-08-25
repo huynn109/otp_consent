@@ -24,8 +24,10 @@ flutter:
   # be modified. They are used by the tooling to maintain consistency when
   # adding or updating assets for this project.
   plugin:
-    androidPackage: com.huynn109.otp_consent
-    pluginClass: OtpConsentPlugin
+    platforms:
+      android:
+        package: com.huynn109.otp_consent
+        pluginClass: OtpConsentPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

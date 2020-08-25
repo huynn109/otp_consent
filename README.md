@@ -19,5 +19,5 @@ Extend OtpConsentAutoFill mixin that will offer you:
 - startOtpConsent(): to listen SMS code from the native
 - stopOtpConsent(): to stop listen broadcast receiver from native
 - smsReceived(sms): call get value otp when the sms is received. 
-- sms: get sms code received
+- sms: get sms received
 

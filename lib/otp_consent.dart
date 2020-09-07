@@ -28,8 +28,8 @@ class OtpConsent {
   Stream<Map<String, String>> get sms => _smsController.stream;
 
   Future<bool> startListening({String senderPhoneNumber}) async {
-    final bool startListening =
-        await _channel.invokeMethod('startListening', senderPhoneNumber);
+    final bool startListening = await _channel.invokeMethod(
+        'startListening', {"senderPhoneNumber": senderPhoneNumber});
     return startListening;
   }
 

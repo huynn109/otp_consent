@@ -13,3 +13,7 @@
 ## 1.0.2
 
 * Fixed some bugs
+
+## 1.0.3
+
+* Fixed sender phone number

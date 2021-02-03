@@ -1,22 +1,21 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:otp_consent/otp_consent.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MaterialApp(home: MyApp(),));
 
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
-  var otpConsent = OtpConsent();
+class _MyAppState extends State<MyApp>  {
 
   @override
   void initState() {
     super.initState();
+    OtpConsent().startListening();
   }
 
   @override
@@ -38,7 +37,7 @@ class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
                   textColor: Colors.white,
                   child: Text('Start Listening'),
                   onPressed: () async {
-                    startOtpConsent(senderPhoneNumber: "0909999999");
+                    OtpConsent().startListening();
                   },
                 )
               ],
@@ -49,15 +48,12 @@ class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
     );
   }
 
-  @override
   void smsReceived(String sms) {
     log('smsReceived $sms');
-    log('parsed ${this.sms}');
   }
 
   @override
   void dispose() {
-    stopOtpConsent();
     super.dispose();
   }
 }

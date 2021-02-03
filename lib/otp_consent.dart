@@ -2,9 +2,6 @@
 /// It is compatible Android only.
 ///
 import 'dart:async';
-import 'dart:collection';
-import 'dart:math';
-import 'dart:developer' as dev;
 
 import 'package:flutter/services.dart';
 
@@ -12,7 +9,7 @@ import 'package:flutter/services.dart';
 ///
 class OtpConsent {
   /// Create instance [OtpConsent] plugin
-  static OtpConsent _singleton;
+  static OtpConsent? _singleton;
 
   factory OtpConsent() => _singleton ??= OtpConsent._();
 
@@ -25,9 +22,9 @@ class OtpConsent {
   final StreamController<Map<String, String>> _smsController =
       StreamController.broadcast();
 
-  Stream<Map<String, String>> get sms => _smsController.stream;
+  Stream<Map<String, String>>? get sms => _smsController.stream;
 
-  Future<bool> startListening({String senderPhoneNumber}) async {
+  Future<bool> startListening({String? senderPhoneNumber}) async {
     final bool startListening = await _channel.invokeMethod(
         'startListening', {"senderPhoneNumber": senderPhoneNumber});
     return startListening;
@@ -51,21 +48,21 @@ class OtpConsent {
 }
 
 mixin OtpConsentAutoFill {
-  final OtpConsent _otpConsent = OtpConsent();
-  String sms;
-  StreamSubscription _subscription;
+  final OtpConsent? _otpConsent = OtpConsent();
+  String? sms;
+  StreamSubscription? _subscription;
 
-  Future<void> startOtpConsent({String senderPhoneNumber}) async {
+  Future<void> startOtpConsent({String? senderPhoneNumber}) async {
     _subscription?.cancel();
-    _subscription = _otpConsent.sms.listen((sms) {
+    _subscription = _otpConsent?.sms?.listen((sms) {
       this.sms = sms['sms'];
       smsReceived(sms['smsParsed']);
     });
-    _otpConsent.startListening(senderPhoneNumber: senderPhoneNumber);
+    _otpConsent?.startListening(senderPhoneNumber: senderPhoneNumber);
   }
 
   Future<void> stopOtpConsent() async {
-    await _otpConsent.stopListening;
+    await _otpConsent?.stopListening;
     _cancel();
   }
 
@@ -73,5 +70,5 @@ mixin OtpConsentAutoFill {
     _subscription?.cancel();
   }
 
-  void smsReceived(String sms);
+  void smsReceived(String? sms);
 }

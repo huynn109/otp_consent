@@ -12,11 +12,11 @@
 
 ## 1.0.2
 
-* Fixed some bugs
+* Fixed some bugs.
 
 ## 1.0.3
 
-* Fixed sender phone number
+* Fixed sender phone number.
 
 ## 2.0.0-nullsafety.0
 

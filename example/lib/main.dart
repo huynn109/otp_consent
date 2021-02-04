@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
                   textColor: Colors.white,
                   child: Text('Start Listening'),
                   onPressed: () async {
-                    startOtpConsent(senderPhoneNumber: "0909000000");
+                    startOtpConsent();
                   },
                 ),
                 Text(otp ?? ""),

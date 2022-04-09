@@ -48,22 +48,8 @@ pubspec.lock
 
 .gradle/vcs-1/gc.properties
 
-build.gradle
-
-example/android/app/src/main/AndroidManifest.xml
-
 example/ios/Flutter/.last_build_id
 
 example/ios/Podfile.lock
 
 example/ios/Runner.xcodeproj/project.pbxproj
-
-gradle/wrapper/gradle-wrapper.jar
-
-gradle/wrapper/gradle-wrapper.properties
-
-gradlew
-
-gradlew.bat
-
-local.properties

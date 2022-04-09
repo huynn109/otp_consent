@@ -52,13 +52,15 @@ mixin OtpConsentAutoFill {
   String? sms;
   StreamSubscription? _subscription;
 
-  Future<void> startOtpConsent({String? senderPhoneNumber}) async {
+  Future<bool> startOtpConsent({String? senderPhoneNumber}) async {
     _subscription?.cancel();
     _subscription = _otpConsent?.sms?.listen((sms) {
       this.sms = sms['sms'];
       smsReceived(sms['smsParsed']);
     });
-    _otpConsent?.startListening(senderPhoneNumber: senderPhoneNumber);
+    var startListening =
+        await _otpConsent?.startListening(senderPhoneNumber: senderPhoneNumber);
+    return startListening ?? false;
   }
 
   Future<void> stopOtpConsent() async {

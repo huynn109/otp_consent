@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:otp_consent/otp_consent.dart';
 
-void main() => runApp(MaterialApp(home: MyApp(),));
+void main() => runApp(MaterialApp(
+      home: MyApp(),
+    ));
 
 class MyApp extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
   String? otp;
+  bool startListen = false;
 
   @override
   void initState() {
@@ -33,9 +36,12 @@ class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
                 MaterialButton(
                   color: Colors.red,
                   textColor: Colors.white,
-                  child: Text('Start Listening'),
+                  child: Text(startListen ? 'Started' : 'Start Listening'),
                   onPressed: () async {
-                    startOtpConsent();
+                    var startListen = await startOtpConsent();
+                    setState(() {
+                      this.startListen = startListen;
+                    });
                   },
                 ),
                 Text(otp ?? ""),
@@ -56,7 +62,7 @@ class _MyAppState extends State<MyApp> with OtpConsentAutoFill {
   void smsReceived(String? sms) {
     setState(() {
       otp = sms;
+      startListen = false;
     });
   }
-
 }

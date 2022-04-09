@@ -10,6 +10,10 @@ SMS need to follow some rules as describe here
 - 4-10 digit alphanumeric with one number
 - Not from contact
 
+## Screenshot
+
+<img src="https://raw.githubusercontent.com/huynn109/otp_consent/master/screenshot/android.png" width="300">
+
 ### Usage
 
 ```dart

@@ -25,3 +25,7 @@
 ## 2.0.0-nullsafety.1
 
 * Update example
+
+## 2.0.1
+
+* Update example
